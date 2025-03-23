@@ -1,0 +1,18 @@
+POST http://localhost:3000/api/expense/5511912345672 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidGVzdHVzZXJAdGVzdC5jb20iLCJpYXQiOjE3Mzk3MjY1MzcsImV4cCI6MTczOTcyODMzN30.yKrWeBShuZeuV9bw92p2wYc4wy5mrv4az2xanUCZYjQ
+
+{
+    "expense_title": "Almoço em restaurante",
+    "amount": 34,
+    "date": "2025-13-02",
+    "category": "Alimentação",
+    "subcategory": "Restaurante",
+    "payment_method": "Débito",
+    "account": "Digio",
+    "description": "Almoço no Finestra",
+    "location": "Perdizes",
+    "priority_tag": "Gastos adicionais"
+}
+
+###
