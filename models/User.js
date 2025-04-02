@@ -33,11 +33,13 @@ const userSchema = new mongoose.Schema({
             message: props => `${props.value} não é um número de telefone brasileiro válido!`
         }
     },
-    opt_in: { type: Boolean, required: false }
-    // password: { type: String, required: true }
-}, {
-    timestamps: true // Adiciona "createdAt" e "updatedAt" automaticamente
-});
+    opt_in: { type: Boolean, required: false },
+    resetPasswordToken: { type: String }, // Token para redefinição de senha
+    resetPasswordExpires: { type: Date }  // Data de expiração do token
+},
+    {
+        timestamps: true // Adiciona "createdAt" e "updatedAt" automaticamente
+    });
 
 userSchema.index({ email: 1 }, { unique: true });
 userSchema.index({ phone: 1 }, { unique: true });
