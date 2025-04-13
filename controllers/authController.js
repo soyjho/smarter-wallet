@@ -13,12 +13,13 @@ export const requestPasswordReset = async (req, res, next) => {
         if (!user) {
             return res.status(404).json({
                 success: false,
-                message: "Usuário não encontrado"
+                userFound: false,
+                message: "Usuário não encontrado."
             });
         }
 
         // Generate reset token (random string)
-        const resetToken = crypto.randomBytes(32).toString('hex');
+        const resetToken = crypto.randomBytes(6).toString('hex');
         const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
 
         // Set token and expiration in user record
@@ -26,10 +27,17 @@ export const requestPasswordReset = async (req, res, next) => {
         user.resetPasswordExpires = Date.now() + 3600000; // 1 hour expiration
         await user.save();
 
-        await sendEmail(email, "Redefinição de senha", `Informe o código para que possa seguir: ${resetToken}`);
+        await sendEmail(
+            email,
+            "Redefinição de senha",
+            `Informe o código para que possa seguir com a redefinição de senha: ${resetToken}\n\nEste código é válido por 1 hora.`
+        );
+
+        console.log(email)
 
         return res.status(200).json({
             success: true,
+            userFound: true,
             message: "E-mail enviado! Verifique sua caixa de entrada."
         });
 
@@ -45,17 +53,38 @@ export const resetPassword = async (req, res, next) => {
         // Hash token to compare with stored value
         const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
-        // Find user with matching token and check expiration
-        const user = await User.findOne({
-            email,
-            resetPasswordToken: hashedToken,
-            resetPasswordExpires: { $gt: Date.now() }
-        });
+        // Find user by email first
+        const user = await User.findOne({ email });
 
         if (!user) {
             return res.status(400).json({
                 success: false,
-                message: "Token inválido ou expirado!"
+                userFound: false,
+                isTokenValid: false,
+                isTokenExpired: false,
+                message: "Usuário não encontrado!"
+            });
+        }
+
+        // Check if the token matches
+        if (user.resetPasswordToken !== hashedToken) {
+            return res.status(400).json({
+                success: false,
+                userFound: true,
+                isTokenValid: false,
+                isTokenExpired: false,
+                message: "Token inválido!"
+            });
+        }
+
+        // Check if token is expired
+        if (user.resetPasswordExpires < Date.now()) {
+            return res.status(400).json({
+                success: false,
+                userFound: true,
+                isTokenValid: false,
+                isTokenExpired: false,
+                message: "Token expirado!"
             });
         }
 
@@ -77,6 +106,9 @@ export const resetPassword = async (req, res, next) => {
 
         return res.status(200).json({
             success: true,
+            userFound: true,
+            isTokenValid: true,
+            isTokenExpired: false,
             message: "Senha redefinida com sucesso!"
         });
 

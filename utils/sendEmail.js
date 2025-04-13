@@ -1,23 +1,22 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
+import dotenv from 'dotenv';
+dotenv.config();
 
-console.log("Using email:", process.env.EMAIL_USER); // Debugging
-console.log("Using pass:", process.env.EMAIL_PASS); // Debugging
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-const sendEmail = async (to, subject, text) => {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail', // Use your email provider
-        auth: {
-            user: process.env.EMAIL_USER, // Your email
-            pass: process.env.EMAIL_PASS  // Your email password
-        }
-    });
-
-    await transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to,
-        subject,
-        text
-    });
+export const sendEmail = async (to, subject, text) => {
+    try {
+        await resend.emails.send({
+            from: 'Smarter Wallet <onboarding@resend.dev>',
+            to,
+            subject,
+            text,
+        });
+    } catch (error) {
+        console.error('Erro ao enviar e-mail:', error);
+        throw error;
+    }
 };
 
 export default sendEmail;
+
