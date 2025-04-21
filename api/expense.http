@@ -1,11 +1,11 @@
-POST http://localhost:3000/api/expense/5511912345672 HTTP/1.1
+POST http://localhost:3000/api/expense/5511912345670 HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidGVzdHVzZXJAdGVzdC5jb20iLCJpYXQiOjE3Mzk3MjY1MzcsImV4cCI6MTczOTcyODMzN30.yKrWeBShuZeuV9bw92p2wYc4wy5mrv4az2xanUCZYjQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic21hcnRlcndhbGxldC5jb250YWN0QGdtYWlsLmNvbSIsImlkIjoiNjdmYzIyOTlhYTJlOTk4OTU0YjRjNTExIiwiaWF0IjoxNzQ1MjY3NDk3LCJleHAiOjE3NDUyNjkyOTd9.NXiiAwAPfELOKEtMFUfNH-Ic-Veas2PGQRr3cLVd92g
 
 {
-    "expense_title": "Almoço em restaurante",
-    "amount": 34,
-    "date": "2025-13-02",
+    "expense_title": "La Finestra",
+    "amount": 37,
+    "date": "2025-04-15",
     "category": "Alimentação",
     "subcategory": "Restaurante",
     "payment_method": "Débito",
@@ -16,3 +16,30 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidGVzdHVzZ
 }
 
 ###
+
+GET http://localhost:3000/api/expense/5511912345670?category=Alimentação
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic21hcnRlcndhbGxldC5jb250YWN0QGdtYWlsLmNvbSIsImlkIjoiNjdmYzIyOTlhYTJlOTk4OTU0YjRjNTExIiwiaWF0IjoxNzQ1MjY3NDk3LCJleHAiOjE3NDUyNjkyOTd9.NXiiAwAPfELOKEtMFUfNH-Ic-Veas2PGQRr3cLVd92g
+
+###
+
+DELETE  http://localhost:3000/api/expense/680644c11ba994f79c8760b9
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic21hcnRlcndhbGxldC5jb250YWN0QGdtYWlsLmNvbSIsImlkIjoiNjdmYzIyOTlhYTJlOTk4OTU0YjRjNTExIiwiaWF0IjoxNzQ1MjY3NDk3LCJleHAiOjE3NDUyNjkyOTd9.NXiiAwAPfELOKEtMFUfNH-Ic-Veas2PGQRr3cLVd92g
+###
+
+PUT http://localhost:3000/api/expense/68064028cd51ce7ee3a3c13f
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic21hcnRlcndhbGxldC5jb250YWN0QGdtYWlsLmNvbSIsImlkIjoiNjdmYzIyOTlhYTJlOTk4OTU0YjRjNTExIiwiaWF0IjoxNzQ1MjY3NDk3LCJleHAiOjE3NDUyNjkyOTd9.NXiiAwAPfELOKEtMFUfNH-Ic-Veas2PGQRr3cLVd92g
+content-type: application/json
+
+{
+    "expense_title": "Quilinho",
+    "amount": 27,
+    "date": "2025-04-20",
+    "category": "Alimentação",
+    "subcategory": "Restaurante",
+    "payment_method": "PIX",
+    "account": "NuBank",
+    "description": "Almoço no Quilinho",
+    "location": "Perdizes",
+    "priority_tag": "Gastos adicionais"
+}

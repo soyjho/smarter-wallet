@@ -1,4 +1,6 @@
 import User from '../models/User.js';
+import Expense from '../models/Expense.js';
+import Income from '../models/Income.js';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -14,7 +16,6 @@ export const getUser = async (req, res, next) => {
     try {
         // Fazer busca do usuário com base no e-mail
         const user = await User.findOne({ email: req.body.email });
-        console.log(user);
 
         if (!user) return res.status(404).json({
             success: true,
@@ -36,7 +37,7 @@ export const getUser = async (req, res, next) => {
         // 3. Comparação
         if (inputHash === storedHash) {
             // Se password for correto, gera token de acesso
-            const accessToken = generateAccessToken({ user: req.body.email });
+            const accessToken = generateAccessToken({ user: req.body.email, id: user._id });
 
             return res.status(200).json({
                 accessToken: accessToken,
@@ -109,6 +110,29 @@ export const createUser = async (req, res, next) => {
                 message: error.message
             });
         }
+        next();
+    }
+};
+
+export const deleteUserAndData = async (req, res, next) => {
+    try {
+        const userId = req.user._id; // _id é atrelado ao token no login
+
+        // 1. Deletar despesas
+        await Expense.deleteMany({ user_id: userId });
+
+        // 2. Deletar entradas
+        await Income.deleteMany({ user_id: userId });
+
+        // 3. Deletar usuário
+        await User.findByIdAndDelete(userId);
+
+        res.status(200).json({
+            success: true,
+            message: 'Todos os dados do usuário foram deletados com sucesso.'
+        });
+    } catch (error) {
+        console.error(error);
         next();
     }
 };

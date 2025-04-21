@@ -39,3 +39,8 @@ Content-Type: application/json
     "token": "54ee5973d4ff",
     "newPassword": "testing321"
 }
+
+###
+
+DELETE  http://localhost:3000/api/user/delete-account HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic21hcnRlcndhbGxldC5jb250YWN0QGdtYWlsLmNvbSIsImlkIjoiNjdmYzIyOTlhYTJlOTk4OTU0YjRjNTExIiwiaWF0IjoxNzQ1MjY3NDk3LCJleHAiOjE3NDUyNjkyOTd9.NXiiAwAPfELOKEtMFUfNH-Ic-Veas2PGQRr3cLVd92g

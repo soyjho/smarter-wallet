@@ -1,0 +1,44 @@
+POST http://localhost:3000/api/income/5511912345670 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic21hcnRlcndhbGxldC5jb250YWN0QGdtYWlsLmNvbSIsImlkIjoiNjdmYzIyOTlhYTJlOTk4OTU0YjRjNTExIiwiaWF0IjoxNzQ1MjY3NDk3LCJleHAiOjE3NDUyNjkyOTd9.NXiiAwAPfELOKEtMFUfNH-Ic-Veas2PGQRr3cLVd92g
+
+{
+    "income_title": "Pagamento",
+    "amount": "5500",
+    "date": "2025-04-15",
+    "category": "Renda",
+    "subcategory": "Salário",
+    "payment_method": "PIX",
+    "institution": "Itaú",
+    "description": "Recebimento do salário com adição de bônus de férias",
+    "source": "Xaropim LTDA",
+    "received_in": "Conta bancária"
+}
+
+###
+
+GET http://localhost:3000/api/income/5511912345670?category=Renda
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic21hcnRlcndhbGxldC5jb250YWN0QGdtYWlsLmNvbSIsImlkIjoiNjdmYzIyOTlhYTJlOTk4OTU0YjRjNTExIiwiaWF0IjoxNzQ1MjY3NDk3LCJleHAiOjE3NDUyNjkyOTd9.NXiiAwAPfELOKEtMFUfNH-Ic-Veas2PGQRr3cLVd92g
+###
+
+DELETE  http://localhost:3000/api/income/680646715603a95821174bb9
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic21hcnRlcndhbGxldC5jb250YWN0QGdtYWlsLmNvbSIsImlkIjoiNjdmYzIyOTlhYTJlOTk4OTU0YjRjNTExIiwiaWF0IjoxNzQ1MjY3NDk3LCJleHAiOjE3NDUyNjkyOTd9.NXiiAwAPfELOKEtMFUfNH-Ic-Veas2PGQRr3cLVd92g
+###
+
+PUT http://localhost:3000/api/income/680646805603a95821174bc0
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoic21hcnRlcndhbGxldC5jb250YWN0QGdtYWlsLmNvbSIsImlkIjoiNjdmYzIyOTlhYTJlOTk4OTU0YjRjNTExIiwiaWF0IjoxNzQ1MjY3NDk3LCJleHAiOjE3NDUyNjkyOTd9.NXiiAwAPfELOKEtMFUfNH-Ic-Veas2PGQRr3cLVd92g
+
+{
+    "income_title": "Pagamento",
+    "amount": "10500",
+    "date": "2025-04-15",
+    "category": "Renda",
+    "subcategory": "Salário",
+    "payment_method": "PIX",
+    "institution": "Itaú",
+    "description": "Recebimento do salário com adição de bônus de férias",
+    "source": "Xaropim LTDA",
+    "received_in": "Conta bancária"
+}

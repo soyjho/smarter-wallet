@@ -1,14 +1,13 @@
-import Expense from '../models/Expense.js';
+import Income from '../models/Income.js';
 import User from '../models/User.js';
 import moment from 'moment';
-import mongoose from 'mongoose';
 
-export const createExpense = async (req, res, next) => {
+export const createIncome = async (req, res, next) => {
     try {
 
         const phone = req.params.phone;
 
-        const { expense_title, amount, date, category, subcategory, payment_method, account, description, location, priority_tag } = req.body;
+        const { income_title, amount, date, category, subcategory, payment_method, institution, description, source, received_in } = req.body;
 
         // Verificar existência de usuário na base
         ////////////////   START A   ////////////////////////////
@@ -23,13 +22,13 @@ export const createExpense = async (req, res, next) => {
         }
         ////////////////   END A   ////////////////////////////
 
-        const expense = new Expense({ phone, expense_title, amount, date, category, subcategory, payment_method, account, description, location, priority_tag, user_id: existingUser._id });
-        await expense.save();
+        const income = new Income({ phone, income_title, amount, date, category, subcategory, payment_method, institution, description, source, received_in, user_id: existingUser._id });
+        await income.save();
 
         res.status(201).json({
             success: true,
             expenseSaved: true,
-            message: "Despesa registrada com sucesso!"
+            message: "Entrada registrada com sucesso!"
         });
     } catch (error) {
         if (error.name === 'ValidationError') {
@@ -44,7 +43,7 @@ export const createExpense = async (req, res, next) => {
     }
 }
 
-export const getExpenses = async (req, res, next) => {
+export const getIncomes = async (req, res, next) => {
     try {
         const phone = req.params.phone;
         const { category, subcategory, startDate, endDate } = req.query;
@@ -80,9 +79,9 @@ export const getExpenses = async (req, res, next) => {
 
         query.date = { $gte: start, $lte: end };
 
-        const expenses = await Expense.find(query).sort({ date: -1 });
+        const incomes = await Income.find(query).sort({ date: -1 });
 
-        const cleanedExpenses = expenses.map(exp => {
+        const cleanedIncomes = incomes.map(exp => {
             const obj = exp.toObject();
 
             const numericAmount = parseFloat(obj.amount?.toString());
@@ -101,8 +100,8 @@ export const getExpenses = async (req, res, next) => {
 
         res.status(200).json({
             success: true,
-            count: cleanedExpenses?.length || 0,
-            expenses: cleanedExpenses
+            count: cleanedIncomes?.length || 0,
+            expenses: cleanedIncomes
         });
 
     } catch (error) {
@@ -111,25 +110,27 @@ export const getExpenses = async (req, res, next) => {
     }
 };
 
-export const deleteExpense = async (req, res, next) => {
+export const deleteIncome = async (req, res, next) => {
     try {
-        const { expenseId } = req.params;
+        const { incomeId } = req.params;
         const userId = req?.user?._id?.toString();
 
-        const deleted = await Expense.findOneAndDelete({ _id: expenseId, user_id: userId });
+        console.log('income: ', incomeId, userId);
+
+        const deleted = await Income.findOneAndDelete({ _id: incomeId, user_id: userId });
 
         if (!deleted) {
             return res.status(404).json({
                 success: false,
                 deleted: false,
-                message: "Despesa não encontrada ou não pertence ao usuário."
+                message: "Entrada não encontrada ou não pertence ao usuário."
             });
         }
 
         res.status(200).json({
             success: true,
             deleted: true,
-            message: "Despesa removida com sucesso."
+            message: "Entrada removida com sucesso."
         });
     } catch (error) {
         console.error(error);
@@ -137,42 +138,38 @@ export const deleteExpense = async (req, res, next) => {
     }
 };
 
-export const updateExpense = async (req, res, next) => {
+export const updateIncome = async (req, res, next) => {
     try {
-        const { expenseId } = req.params;
+        const { incomeId } = req.params;
         const updates = req.body;
         const userId = req.user._id;  // Pega do token
 
-        console.log(updates);
-
-        const updated = await Expense.findOneAndUpdate(
-            { _id: expenseId, user_id: userId },  // Garantir que é o usuário
+        const updated = await Income.findOneAndUpdate(
+            { _id: incomeId, user_id: userId },  // Garantir que é o usuário
             updates,
             { new: true, runValidators: true }
         );
-
-        console.log(updated);
 
         if (!updated) {
             return res.status(404).json({
                 success: false,
                 updated: false,
-                expense: {},
-                message: "Despesa não encontrada ou não pertence ao usuário."
+                income: {},
+                message: "Entrada não encontrada ou não pertence ao usuário."
             });
         }
 
         // Format amount for response
-        const formattedExpense = updated.toObject();
-        formattedExpense.amount = new Intl.NumberFormat('pt-BR', {
+        const formattedIncome = updated.toObject();
+        formattedIncome.amount = new Intl.NumberFormat('pt-BR', {
             style: 'currency',
             currency: 'BRL'
-        }).format(parseFloat(formattedExpense.amount?.toString()));
+        }).format(parseFloat(formattedIncome.amount?.toString()));
 
         res.status(200).json({
             success: true,
             updated: true,
-            expense: formattedExpense,
+            income: formattedIncome,
             message: "Entrada atualizada com sucesso.",
         });
     } catch (error) {
@@ -180,6 +177,3 @@ export const updateExpense = async (req, res, next) => {
         next();
     }
 };
-
-
-

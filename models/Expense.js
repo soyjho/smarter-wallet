@@ -15,7 +15,14 @@ const expenseSchema = new mongoose.Schema({
     },
     date: {
         type: String,
-        required: [true, 'date (data em que ocorreu a despesa) é uma informação obrigatória.']
+        required: [true, 'date (data em que ocorreu a despesa) é uma informação obrigatória.'],
+        validate: {
+            validator: function (value) {
+                // Regex to match YYYY-MM-DD format
+                return /^\d{4}-\d{2}-\d{2}$/.test(value);
+            },
+            message: props => `${props.value} não está no formato válido (YYYY-MM-DD).`
+        }
     },
     category: {
         type: String,
@@ -37,6 +44,9 @@ const expenseSchema = new mongoose.Schema({
         type: Object
     },
     priority_tag: { // essencial, opcional, luxo
+        type: String
+    },
+    user_id: {
         type: String
     }
 }, {
